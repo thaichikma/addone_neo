@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <record id="view_picking_move_form_inherit_model_maker" model="ir.ui.view">
+            <field name="name">stock.picking.form.model_maker</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='move_ids_without_package']/tree/field[@name='product_id']" position="after">
+                    <field name="x_product_maker" force_save="1" readonly="1"/>
+                    <field name="x_product_model" force_save="1" readonly="1"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_picking_internal_search_inherit_model_maker" model="ir.ui.view">
+            <field name="name">stock.picking.form.model_maker</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_internal_search"/>
+            <field name="arch" type="xml">
+                <field name="name" position="before">
+                    <field name="move_ids_without_package" string="Maker"
+                           filter_domain="[('move_ids_without_package.x_product_maker.name', 'ilike', self)]"/>
+                    <field name="move_ids_without_package" string="Model"
+                           filter_domain="[('move_ids_without_package.x_product_model', 'ilike', self)]"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</odoo>

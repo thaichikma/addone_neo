@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <record id="view_order_form_inherit_model_maker" model="ir.ui.view">
+            <field name="name">sale.order.form.model_maker</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <!--                <xpath expr="//field[@name='date_order']" position="attributes">-->
+                <!--                         <attribute name="invisible">1</attribute>-->
+                <!--                </xpath>-->
+
+                <xpath expr="//field[@name='client_order_ref']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='incoterm']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='incoterm_location']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+
+
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="x_partner_child_ids" invisible="1"/>
+                    <field name="x_contact_id" options="{'no_create': True, 'no_quick_create': True}" string="Contact" domain="[('id', 'in', x_partner_child_ids)]"/>
+                </xpath>
+
+                <xpath expr="//field[@name='sale_order_template_id']" position="after">
+                    <field name="client_order_ref"/>
+                </xpath>
+                <xpath expr="//field[@name='validity_date']" position="after">
+                    <field name="x_quotation_date"/>
+                    <field name="x_validity_day"/>
+                    <field name="x_lead_time"/>
+                </xpath>
+                <xpath expr="//field[@name='date_order']" position="after">
+                    <field name="commitment_date"/>
+                    <field name="incoterm"/>
+                    <field name="incoterm_location"/>
+                </xpath>
+
+                <xpath expr="//field[@name='order_line']/tree/field[@name='name']" position="before">
+                    <field name="x_product_maker" force_save="1" readonly="1"/>
+                    <field name="x_product_model" force_save="1" readonly="1"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_sales_order_filter_inherit_model_model_maker" model="ir.ui.view">
+            <field name="name">sale.order.search.view.inherit.model_maker</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+            <field name="arch" type="xml">
+                <field name="name" position="before">
+                    <field name="order_line" string="Maker"
+                           filter_domain="[('order_line.x_product_maker.name', 'ilike', self)]"/>
+                    <field name="order_line" string="Model"
+                           filter_domain="[('order_line.x_product_model', 'ilike', self)]"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</odoo>

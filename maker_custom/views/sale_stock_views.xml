@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <record id="view_order_form_inherit_sale_stock_inherit_model_maker" model="ir.ui.view">
+            <field name="name">sale.order.form.model_maker</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale_stock.view_order_form_inherit_sale_stock"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[hasclass('o_row')]" position="replace">
+<!--                    <attribute name="invisible">1</attribute>-->
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

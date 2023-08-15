@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <record id="view_purchase_order_form_inherit_model_maker" model="ir.ui.view">
+            <field name="name">purchase.order.form.model_maker</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="x_partner_child_ids" invisible="1"/>
+                    <field name="x_contact_id" options="{'no_create': True, 'no_quick_create': True}" string="Contact"
+                           domain="[('id', 'in', x_partner_child_ids)]"/>
+                </xpath>
+
+                <xpath expr="//field[@name='incoterm_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='incoterm_location']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='payment_term_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='fiscal_position_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='user_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='origin']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='currency_id']" position="after">
+                    <field name="incoterm_id"/>
+                    <field name="incoterm_location"/>
+                    <field name="payment_term_id"/>
+                    <field name="fiscal_position_id"/>
+                </xpath>
+
+                <xpath expr="//div[@name='reminder']" position="after">
+                    <field name="user_id"/>
+                    <field name="origin"/>
+                </xpath>
+                <xpath expr="//field[@name='order_line']/tree/field[@name='name']" position="before">
+                    <field name="x_product_maker" force_save="1" readonly="1"/>
+                    <field name="x_product_model" force_save="1" readonly="1"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="purchase_order_view_search_model_model_maker" model="ir.ui.view">
+            <field name="name">purchase.order.search.view.inherit.model_maker</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_view_search"/>
+            <field name="arch" type="xml">
+                <field name="name" position="before">
+                    <field name="order_line" string="Maker"
+                           filter_domain="[('order_line.x_product_maker.name', 'ilike', self)]"/>
+                    <field name="order_line" string="Model"
+                           filter_domain="[('order_line.x_product_model', 'ilike', self)]"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="view_purchase_order_filter_model_model_maker" model="ir.ui.view">
+            <field name="name">purchase.order.search.view.inherit.model_maker</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.view_purchase_order_filter"/>
+            <field name="arch" type="xml">
+                <field name="name" position="before">
+                    <field name="order_line" string="Maker"
+                           filter_domain="[('order_line.x_product_maker.name', 'ilike', self)]"/>
+                    <field name="order_line" string="Model"
+                           filter_domain="[('order_line.x_product_model', 'ilike', self)]"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</odoo>

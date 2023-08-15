@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model="ir.ui.view" id="product_template_kanban_maker_view">
+        <field name="name">Product Template Kanban Maker</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_kanban_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//kanban" position="inside">
+                <field name="x_maker"/>
+                <field name="x_model"/>
+            </xpath>
+            <xpath expr="//div[@name='product_lst_price']" position="after">
+                <div t-if="record.x_maker.raw_value">Marker:
+                    <field name="x_maker"/>
+                </div>
+                <div t-if="record.x_model.raw_value">Model:
+                    <field name="x_model"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="product_template_tree_maker_view">
+        <field name="name">Product Template Tree Maker</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_tree_view"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="x_maker"/>
+                <field name="x_model"/>
+            </field>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="product_product_tree_maker_view">
+        <field name="name">Product Product Tree Maker</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_product_tree_view"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="x_maker"/>
+                <field name="x_model"/>
+            </field>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="product_template_form_maker_view">
+        <field name="name">Product Template Form Maker</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <field name="detailed_type" position="after">
+                <field name="x_maker"/>
+                <field name="x_model"/>
+            </field>
+        </field>
+    </record>
+
+
+    <record id="product_template_search_view_inherit_model_model_maker" model="ir.ui.view">
+        <field name="name">product.template.search.view.inherit.model_maker</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_search_view"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="name" string="Maker" filter_domain="[('x_maker.name', 'ilike', self)]"/>
+                <field name="name" string="Model" filter_domain="[('x_model', 'ilike', self)]"/>
+            </field>
+        </field>
+    </record>
+
+
+</odoo>
