@@ -1,5 +1,5 @@
 from odoo import _, api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 
 class ProductTemplate(models.Model):
@@ -24,6 +24,7 @@ class ProductTemplate(models.Model):
             raise ValidationError(_('Error ! Model and Maker are duplicated'))
 
         return True
+
 
 class XResMarker(models.Model):
     _name = 'xres.maker'
