@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="sale_order_form_inherit" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <!-- add field maker_model-->
+            <xpath expr="//field[@name='product_template_id']" position="after">
+                <field name="maker_id"/>
+                <field name="nihon_model"/>
+            </xpath>
+            <xpath expr="//field[@name='date_order'][2]" position="after">
+                <field name="validity_days"/>
+                <field name="lead_time"/>
+            </xpath>
+            <!-- hide field-->
+            <xpath expr="//group[@name='sales_person']/field[@name='client_order_ref']" position="replace"/>
+            <xpath expr="//group[@name='sale_shipping']/label" position="replace"/>
+            <xpath expr="//group[@name='sale_shipping']/div" position="replace"/>
+            <xpath expr="//field[@name='incoterm']" position="replace"/>
+            <xpath expr="//field[@name='incoterm_location']" position="replace"/>
+            <!-- move field-->
+            <group name="partner_details">
+                <field name="contact_id"/>
+                <field name="client_order_ref"/>
+            </group>
+            <xpath expr="//group[@name='order_details']/field[@name='show_update_pricelist']" position="before">
+                <label for="commitment_date" string="Delivery Date"/>
+                <div name="commitment_date_div" class="o_row">
+                    <field name="commitment_date"/>
+                    <span name="expected_date_span" class="text-muted">Expected: <field name="expected_date" class="oe_inline" widget="date"/></span>
+                </div>
+                <field name="incoterm" options="{'no_open': True, 'no_create': True}" groups="sale_stock.group_display_incoterm"/>
+                <field name="incoterm_location" groups="sale_stock.group_display_incoterm"/>
+            </xpath>
+            <!-- add print button -->
+            <xpath expr="//header/button[@name='payment_action_capture']" position="before">
+                <button name="print_quotation" string="Print" type="object" class="btn-primary"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="sale_order_search_inherit" model="ir.ui.view">
+        <field name="name">sale.order.search.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="before">
+                <field name="order_line" string="Maker"
+                       filter_domain="[('order_line.product_id.product_tmpl_id.maker_id', 'ilike', self)]"/>
+                <field name="order_line" string="Model"
+                       filter_domain="[('order_line.product_id.product_tmpl_id.nihon_model', 'ilike', self)]"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="quotation_report">
+        <t t-call="web.html_container">
+             <t t-call="web.external_layout">
+                <div class="page">
+                    <h2>TITLE FOR YOUR REPORT</h2>
+                    <!--
+                    Build your report here!
+                    Do it in awesome way ;)
+                    -->
+                </div>
+            </t>
+        </t>
+    </template>
+
+
+<!--    <template id="quotation_report">-->
+<!--        <t t-call="web.html_container">-->
+<!--            <t t-foreach="docs" t-as="doc">-->
+<!--                <t t-call="web.external_layout">-->
+<!--                    <t t-set="doc" t-value="doc.with_context(lang=doc.partner_id.lang)"/>-->
+<!--                    <div class="page">-->
+<!--                        <div class="oe_structure"/>-->
+<!--                        <h1 class="text-center">QUOTATION</h1>-->
+<!--                        <div class="container">-->
+<!--                            <div class="row">-->
+<!--                                <div class="col col-5 border border-dark rounded">-->
+<!--                                    <b><u>Messrs</u></b>-->
+<!--                                    <h4 t-field="doc.partner_id.display_name" class="text-uppercase text-center"/>-->
+<!--                                    <h4 t-if="doc.partner_id.parent_id" class="text-uppercase text-center">-->
+<!--                                        (<span t-field="doc.partner_id.display_name"/>)-->
+<!--                                    </h4>-->
+<!--                                    <div>-->
+<!--                                        <img src="/dt_product_model_maker/static/images/icon_location.png"-->
+<!--                                             height="20" width="20"/>-->
+<!--                                        <span t-field="doc.partner_id.street"/>, <span t-field="doc.partner_id.city"/>, <span t-field="doc.partner_id.state_id.name"/>, <span t-field="doc.partner_id.country_id.name"/>-->
+<!--                                    </div>-->
+<!--                                    <div>-->
+<!--                                        <img src="/dt_product_model_maker/static/images/icon_mobile.png"-->
+<!--                                             height="20" width="20"/>-->
+<!--                                        <span t-field="doc.partner_id.mobile"/>-->
+<!--                                    </div>-->
+<!--                                    <div>-->
+<!--                                        <img src="/dt_product_model_maker/static/images/icon_telephone.png"-->
+<!--                                             height="20" width="20"/>-->
+<!--                                        <span t-field="doc.partner_id.phone"/>-->
+<!--                                    </div>-->
+<!--                                    <div>-->
+<!--                                        <img src="/dt_product_model_maker/static/images/icon_contact.png"-->
+<!--                                             height="20" width="20"/>-->
+<!--                                        <span t-field="doc.contact_id.name"/>-->
+<!--                                    </div>-->
+<!--                                    <div>-->
+<!--                                        <img src="/dt_product_model_maker/static/images/icon_position.png"-->
+<!--                                             height="20" width="20"/>-->
+<!--                                        <span t-field="doc.partner_id.function"/>-->
+<!--                                    </div>-->
+<!--                                    <div>-->
+<!--                                        <img src="/dt_product_model_maker/static/images/icon_email.png"-->
+<!--                                             height="20" width="20"/>-->
+<!--                                        <span t-field="doc.partner_id.email"/>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                                <div class="col col-2"/>-->
+<!--                                <div class="col col-5">-->
+<!--                                    <div class='row'>-->
+<!--                                        <div class="col-4">-->
+<!--                                            <div class="row">-->
+<!--                                                <strong>QUOTATION No.</strong>-->
+<!--                                            </div>-->
+<!--                                            <div class="row">-->
+<!--                                                <strong>Date</strong>-->
+<!--                                            </div>-->
+<!--                                            <div class="row">-->
+<!--                                                <strong>Validity</strong>-->
+<!--                                            </div>-->
+<!--                                            <div class="row">-->
+<!--                                                <strong>Delivery Term</strong>-->
+<!--                                            </div>-->
+<!--                                            <div class="row">-->
+<!--                                                <strong>Destination</strong>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                        <div class="col-4">-->
+<!--                                            <div class="row">-->
+<!--                                                <p>sahdfasdf</p>-->
+<!--                                            </div>-->
+<!--                                            <div class="row">-->
+<!--                                                <p>sahdfasdf</p>-->
+<!--                                            </div>-->
+<!--                                            <div class="row">-->
+<!--                                                <p>sahdfasdf</p>-->
+<!--                                            </div>-->
+<!--                                            <div class="row">-->
+<!--                                                <p>sahdfasdf</p>-->
+<!--                                            </div>-->
+<!--                                            <div class="row">-->
+<!--                                                <p>sahdfasdf</p>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                        <div class="col-4">-->
+<!--                                            <image style="width: 9  0px;height: 90px"-->
+<!--                                                   src="/dt_product_model_maker/static/images/logo3.png"/>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                    <div class='row'>-->
+<!--                                        <div class="col-4">-->
+<!--                                            <div class="row">-->
+<!--                                                <strong>Delivery Time</strong>-->
+<!--                                            </div>-->
+<!--                                            <div class="row">-->
+<!--                                                <strong>Payment Term</strong>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                        <div class="col-8 col-sm-6">-->
+<!--                                            <div class="row border-bottom border-dark">-->
+<!--                                                askdfjklsahdfasdfaskdfjklsahdfasdf-->
+<!--                                            </div>-->
+<!--                                            <div class="row border-bottom border-dark" style="word-wrap: break-word;">-->
+<!--                                                This-->
+<!--                                                div contains a very long word: thisisaveryveryveryveryveryverylongword.-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                    <div class='row'>-->
+<!--                                        <div class="col-4">-->
+<!--                                            <div class="row">-->
+<!--                                                <strong>GRAND TOTAL</strong>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                        <div class="col-8 col-sm-6">-->
+<!--                                            <div class="row">askdfjklsahdfasdfaskdfjklsahdfasdf</div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <table class="table table-bordered">-->
+<!--                                <thead class="thead-dark">-->
+<!--                                    <tr class="text-center">-->
+<!--                                        <th colspan="1">-->
+<!--                                            <strong>No.</strong>-->
+<!--                                        </th>-->
+<!--                                        <th colspan="3">-->
+<!--                                            <strong>ITEMS/DESCRIPTION</strong>-->
+<!--                                        </th>-->
+<!--                                        <th colspan="1">-->
+<!--                                            <strong>MODEL</strong>-->
+<!--                                        </th>-->
+<!--                                        <th colspan="2">-->
+<!--                                            <strong>Quantity/Unit</strong>-->
+<!--                                        </th>-->
+<!--                                        <th colspan="2">-->
+<!--                                            <strong>UNIT PRICE(USD)</strong>-->
+<!--                                        </th>-->
+<!--                                        <th colspan="2">-->
+<!--                                            <strong>AMOUNT(USD)</strong>-->
+<!--                                        </th>-->
+<!--                                        <th colspan="2">-->
+<!--                                            <strong>MAKER</strong>-->
+<!--                                        </th>-->
+<!--                                    </tr>-->
+<!--                                </thead>-->
+<!--                                <tbody>-->
+<!--                                    <tr>-->
+<!--                                        <td colspan="1" class="text-right">1</td>-->
+<!--                                        <td colspan="3">fda</td>-->
+<!--                                        <td colspan="1">sfadffa</td>-->
+<!--                                        <td colspan="1" class="text-center">1</td>-->
+<!--                                        <td colspan="1" class="text-center">pcs</td>-->
+<!--                                        <td colspan="2" class="text-right">11111111</td>-->
+<!--                                        <td colspan="2" class="text-right">11111111</td>-->
+<!--                                        <td colspan="2" class="text-center">asdffd</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <th colspan="1"/>-->
+<!--                                        <th colspan="3" class="text-left">-->
+<!--                                            <strong>-->
+<!--                                                <u>Optional for your reference</u>-->
+<!--                                            </strong>-->
+<!--                                        </th>-->
+<!--                                        <td colspan="1"/>-->
+<!--                                        <td colspan="1"/>-->
+<!--                                        <td colspan="1"/>-->
+<!--                                        <td colspan="2"/>-->
+<!--                                        <td colspan="2"/>-->
+<!--                                        <td colspan="2"/>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td colspan="1" class="text-right">x</td>-->
+<!--                                        <td colspan="3">fda</td>-->
+<!--                                        <td colspan="1">sfadffa</td>-->
+<!--                                        <td colspan="1" class="text-center">1</td>-->
+<!--                                        <td colspan="1" class="text-center">pcs</td>-->
+<!--                                        <td colspan="2" class="text-right">11111111</td>-->
+<!--                                        <td colspan="2" class="text-right">11111111</td>-->
+<!--                                        <t t-esc=""/>-->
+<!--                                        <td colspan="2"/>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td colspan="1"/>-->
+<!--                                        <td colspan="3"/>-->
+<!--                                        <td colspan="1"/>-->
+<!--                                        <td colspan="1"/>-->
+<!--                                        <td colspan="1"/>-->
+<!--                                        <td colspan="2">-->
+<!--                                            <strong>Sub Total</strong>-->
+<!--                                        </td>-->
+<!--                                        <td colspan="2" class="text-right bg-info text-white">11111111</td>-->
+<!--                                        <td colspan="2"/>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td colspan="1"/>-->
+<!--                                        <td colspan="3"/>-->
+<!--                                        <td colspan="1"/>-->
+<!--                                        <td colspan="1"/>-->
+<!--                                        <td colspan="1"/>-->
+<!--                                        <td colspan="2" class="text-right bg-info text-white">-->
+<!--                                            <strong>Tax VAT</strong>-->
+<!--                                        </td>-->
+<!--                                        <td colspan="2" class="text-right bg-info text-white">11111111</td>-->
+<!--                                        <td colspan="2"/>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td colspan="1"/>-->
+<!--                                        <td colspan="3"/>-->
+<!--                                        <td colspan="1"/>-->
+<!--                                        <td colspan="1"/>-->
+<!--                                        <td colspan="1"/>-->
+<!--                                        <td colspan="2" class="text-right bg-dark text-white">-->
+<!--                                            <strong>GRAND TOTAL</strong>-->
+<!--                                        </td>-->
+<!--                                        <td colspan="2" class="text-right bg-dark text-white">11111111</td>-->
+<!--                                        <td colspan="2"/>-->
+<!--                                    </tr>-->
+<!--                                </tbody>-->
+<!--                            </table>-->
+<!--                            <div class="row">-->
+<!--                                <div class="col col-7">-->
+<!--                                    <strong>-->
+<!--                                        <u>Term and Conditions</u>-->
+<!--                                    </strong>-->
+<!--                                    <div class="row">-->
+<!--                                        <h4 class="col col-1">①</h4>-->
+<!--                                        <div class="col col-10">Currency of payment: United States Dollar(USD)</div>-->
+<!--                                    </div>-->
+<!--                                    <div class="row">-->
+<!--                                        <h4 class="col col-1">②</h4>-->
+<!--                                        <div class="col col-10">Warranty as manufacturer's standard.</div>-->
+<!--                                    </div>-->
+<!--                                    <div class="row">-->
+<!--                                        <h4 class="col col-1">③</h4>-->
+<!--                                        <div class="col col-10">This price is applied for the whole purchasing only.-->
+<!--                                            Price-->
+<!--                                            of optional accessories (if any) are applied if bought with main unit.-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                    <div class="row">-->
+<!--                                        <h4 class="col col-1">④</h4>-->
+<!--                                        <div class="col col-10">Please confirm specification before order. Any changes-->
+<!--                                            in-->
+<!--                                            spec or quantity should be re-quoted.-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                    <div class="row">-->
+<!--                                        <h4 class="col col-1">⑤</h4>-->
+<!--                                        <div class="col col-10">We reserve the right to confirm at your customer site-->
+<!--                                            existence of the goods that we will have supplied to you conforming to your-->
+<!--                                            PO.-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                    <div class="row">-->
+<!--                                        <h4 class="col col-1">⑥</h4>-->
+<!--                                        <div class="col col-10">The product marked by an asterisk mark (*) at the No.-->
+<!--                                            column-->
+<!--                                            is regulated its export and/or supply by the Foreign Exchange. Act and-->
+<!--                                            Foreign-->
+<!--                                            Trade Act of Japan. Export/supply is allowed only with an appropriate-->
+<!--                                            governmental authorization.-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                    <div class="row">-->
+<!--                                        <h4 class="col col-1">⑦</h4>-->
+<!--                                        <div class="col col-10">We reserve the right to cancel a part or the whole of-->
+<!--                                            your-->
+<!--                                            purchase order without any penalty even after we have acknowledged the order-->
+<!--                                            to-->
+<!--                                            you in case that the appropriate export license and/or the technology-->
+<!--                                            provision-->
+<!--                                            license are not issued to us by the Japanese government.-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                    <div class="row">-->
+<!--                                        <h4 class="col col-1">⑧</h4>-->
+<!--                                        <div class="col col-10">Please note that the bank fee is fully covered by the-->
+<!--                                            payer.-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                    <div class="row">-->
+<!--                                        <h4 class="col col-1">⑨</h4>-->
+<!--                                        <div class="col col-10">Once order has been placed, cancellation or return of-->
+<!--                                            items-->
+<!--                                            will not be accepted-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                                <div class="col col-5">-->
+<!--                                    <strong class="text-uppercase">NEOTECH SOLUTION JSC</strong>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </t>-->
+<!--            </t>-->
+<!--        </t>-->
+<!--    </template>-->
+</odoo>
+

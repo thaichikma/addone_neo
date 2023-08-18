@@ -20,3 +20,5 @@ class PurchaseOrderLine(models.Model):
     #     if self.product_id:
     #         self.x_product_maker = self.product_id.x_maker
     #         self.x_product_model = self.product_id.x_model
+
+

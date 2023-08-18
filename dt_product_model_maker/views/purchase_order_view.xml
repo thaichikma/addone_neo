@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="purchase_order_form_inherit" model="ir.ui.view">
+        <field name="name">purchase.order.form.inherit</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <!--add field -->
+            <xpath expr="//sheet/notebook/page/field[@name='order_line']/tree/field[@name='product_id']" position="after">
+                <field name="maker_id"/>
+                <field name="nihon_model"/>
+            </xpath>
+            <!--hide field -->
+            <xpath expr="//group[@name='other_info']/field[@name='user_id']" position="replace"/>
+            <xpath expr="//group[@name='other_info']/field[@name='origin']" position="replace"/>
+            <xpath expr="//field[@name='incoterm_id']" position="replace"/>
+            <xpath expr="//field[@name='incoterm_location']" position="replace"/>
+            <xpath expr="//group[@name='invoice_info']/field[@name='payment_term_id']" position="replace"/>
+            <xpath expr="//group[@name='invoice_info']/field[@name='fiscal_position_id']" position="replace"/>
+            <!--move field -->
+            <xpath expr="//form/sheet/group/group[2]" position="inside">
+                <field name="user_id" domain="[('share', '=', False)]" widget="many2one_avatar_user"/>
+                <field name="origin"/>
+                <field name="customer_id"/>
+            </xpath>
+            <xpath expr="//form/sheet/group/group[1]" position="inside">
+                <field name="incoterm_id"/>
+                <field name="incoterm_location"/>
+                <field name="payment_term_id" attrs="{'readonly': ['|', ('invoice_status','=', 'invoiced'), ('state', '=', 'done')]}" options="{'no_create': True}"/>
+                <field name="fiscal_position_id" options="{'no_create': True}" attrs="{'readonly': ['|', ('invoice_status','=', 'invoiced'), ('state', '=', 'done')]}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="purchase_order_search_inherit" model="ir.ui.view">
+        <field name="name">purchase.order.search.inherit</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.view_purchase_order_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="before">
+                <field name="order_line" string="Maker" filter_domain="[('order_line.product_id.product_tmpl_id.maker_id', 'ilike', self)]"/>
+                <field name="order_line" string="Model" filter_domain="[('order_line.product_id.product_tmpl_id.nihon_model', 'ilike', self)]"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
