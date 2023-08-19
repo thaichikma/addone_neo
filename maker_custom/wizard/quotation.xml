@@ -19,33 +19,41 @@
             <field name="print_report_name">'RN_%s' % (object.lay_ngay_hien_tai())</field>
         </record>
 
-<!--        <record id="view_button_phieu_xuat_kho" model="ir.ui.view">-->
-<!--            <field name="name">stock.picking.form.inherit</field>-->
-<!--            <field name="model">stock.picking</field>-->
-<!--            <field eval="10" name="priority"/>-->
-<!--            <field name="inherit_id" ref="stock.view_picking_form"/>-->
-<!--            <field name="arch" type="xml">-->
-<!--                <xpath expr="//form/header/button[@name='do_print_picking']" position="after">-->
-<!--                    <field name="x_type_in_out" invisible="1"/>-->
-<!--                    <button name="print_excel" string="Print excel" type="object" class="oe_highlight"-->
-<!--                    attrs="{'invisible': [('x_type_in_out', '!=', ('outgoing'))]}"/>-->
-<!--                </xpath>-->
-<!--            </field>-->
-<!--        </record>-->
+        <record id="purchase_print_excel_in_report" model="ir.actions.report">
+            <field name="name"></field>
+            <field name="model">sale.order</field>
+            <field name="report_type">xlsx</field>
+            <field name="report_name">maker_custom.delivery</field>
+            <field name="report_file">maker_custom.delivery</field>
+            <field name="print_report_name">'RN_%s' % (object.lay_ngay_hien_tai())</field>
+        </record>
 
-<!--        <record id="view_button_phieu_xuat_nhap_kho" model="ir.ui.view">-->
-<!--            <field name="name">stock.picking.form.inherit</field>-->
-<!--            <field name="model">stock.picking</field>-->
-<!--            <field eval="10" name="priority"/>-->
-<!--            <field name="inherit_id" ref="stock.view_picking_form"/>-->
-<!--            <field name="arch" type="xml">-->
-<!--                <xpath expr="//form/header/button[@name='do_print_picking']" position="after">-->
-<!--                    <field name="x_type_in_out" invisible="1"/>-->
-<!--                    <button name="print_excel" string="Print excel" type="object" class="oe_highlight"-->
-<!--                    attrs="{'invisible': [('x_type_in_out', '!=', ('incoming')),('x_type_in_out', '!=', ('outgoing'))]}"/>-->
-<!--                </xpath>-->
-<!--            </field>-->
-<!--        </record>-->
+        <record id="packing_print_excel_in_report" model="ir.actions.report">
+            <field name="name"></field>
+            <field name="model">sale.order</field>
+            <field name="report_type">xlsx</field>
+            <field name="report_name">maker_custom.delivery</field>
+            <field name="report_file">maker_custom.delivery</field>
+            <field name="print_report_name">'RN_%s' % (object.lay_ngay_hien_tai())</field>
+        </record>
+
+        <record id="payment_print_excel_in_report" model="ir.actions.report">
+            <field name="name"></field>
+            <field name="model">sale.order</field>
+            <field name="report_type">xlsx</field>
+            <field name="report_name">maker_custom.delivery</field>
+            <field name="report_file">maker_custom.delivery</field>
+            <field name="print_report_name">'RN_%s' % (object.lay_ngay_hien_tai())</field>
+        </record>
+
+        <record id="shipping_print_excel_in_report" model="ir.actions.report">
+            <field name="name"></field>
+            <field name="model">sale.order</field>
+            <field name="report_type">xlsx</field>
+            <field name="report_name">maker_custom.delivery</field>
+            <field name="report_file">maker_custom.delivery</field>
+            <field name="print_report_name">'RN_%s' % (object.lay_ngay_hien_tai())</field>
+        </record>
 
 
     </data>
