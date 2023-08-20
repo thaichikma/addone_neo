@@ -55,6 +55,29 @@
             <field name="print_report_name">'RN_%s' % (object.lay_ngay_hien_tai())</field>
         </record>
 
+<!--        record purchase-->
+
+        <record id="purchase_order_form_inherit_maker" model="ir.ui.view">
+            <field name="name">purchase.order.inherit.maker</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='button_confirm']" position="before">
+                        <button name="print_excel" string="Print excel" type="object" class="oe_highlight"
+                       attrs="{'invisible': [('state', 'in', ('draft','sent'))]}"/>
+                    </xpath>
+            </field>
+        </record>
+
+        <record id="ms_report_purchase_print_excel_report" model="ir.actions.report">
+            <field name="name"></field>
+            <field name="model">purchase.order</field>
+            <field name="report_type">xlsx</field>
+            <field name="report_name">maker_custom.purchase</field>
+            <field name="report_file">maker_custom.purchase</field>
+            <field name="print_report_name">'RN_%s' % (object.lay_ngay_hien_tai())</field>
+        </record>
+
 
     </data>
 

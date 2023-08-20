@@ -240,12 +240,11 @@ class AbstractInventoryReport(models.AbstractModel):
             "align": "center", "valign": "vcenter", "text_wrap": True
         })
         sheet.merge_range(row + 4, 7, row + 4, 9, "NEOTECH SOLUTION JSC ", bottun_center)
-        sheet.write(row+4, 1, "Remark:", bottun_left1)
-        sheet.merge_range(row + 4, 2, row + 4, 6, "Warranty as manufacturer's standard and applied for main unit only.", bottun_left1)
-        sheet.merge_range(row + 4, 2, row + 4, 6, "By sign into this document, you confirm to receive the goods:",bottun_left1)
-        sheet.merge_range(row+5, 0,row+5, 6, "①    	Goods in good conditions and Same as mentioned on your PO.", bottun_left)
-        sheet.merge_range(row+6, 0,row+6, 6, "②	    All Appropriate documents shown above for this shipment.", bottun_left)
-        sheet.merge_range(row+7, 0,row+8, 6, "③	    All goods are completely installed and calibrated.", bottun_left)
+        sheet.write(row+4, 1, "Banking informations", bottun_left1)
+        sheet.merge_range(row + 4, 2, row + 4, 6, "All cheques should be crossed and made payable to", bottun_left1)
+        sheet.merge_range(row + 4, 2, row + 4, 6, "①	Beneficiary	",bottun_left1)
+        sheet.merge_range(row+5, 0,row+5, 6, "②	    Bank", bottun_left)
+        sheet.merge_range(row+6, 0,row+6, 6, "③	    Account No", bottun_left)
 
         sheet.merge_range(row+10, 0,row+11, 6, "for TOSHIBA TRANSMISSION & DISTRIBUTION SYSTEMS (VIETNAM) LTD", bottun_left)
         sheet.merge_range(row+10, 7,row+10, 9, "for NEOTECH SOLUTION JSC", bottun_left)

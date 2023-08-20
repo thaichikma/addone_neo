@@ -6,24 +6,26 @@ from odoo.exceptions import UserError
 from odoo.exceptions import ValidationError
 
 
-class AbstractInventoryReport(models.AbstractModel):
-    _name = "report.maker_custom.delivery"
+class AbstractPurchaseReport(models.AbstractModel):
+    _name = "report.maker_custom.purchase"
     _inherit = "report.report_xlsx.abstract"
 
     def generate_xlsx_report(self, workbook, data, partner):
         purchase_id = partner['id']
         query = f"""
-                    select COALESCE(sm.name, ''),
-                        COALESCE(pt.x_model, ''),
-                        COALESCE(sm.quantity_done, 0),
+                    select COALESCE(pt.name ->> 'en_US', ''),
+                        COALESCE(pol.x_product_model, ''),
+                        COALESCE(pol.product_qty, 0),
                         uom.name ->> 'en_US' as uom,
-                        COALESCE(sm.origin, ''),
-                        COALESCE(pt.note, '')
-                    from stock_move as sm
-                        left join product_product as pp on sm.product_id = pp.id
+                        COALESCE(pol.price_unit, 0),
+                        COALESCE(pol.price_subtotal, 0),
+                        COALESCE(maker.name, ' ')
+                    from purchase_order_line as pol
+                        left join product_product as pp on pol.product_id = pp.id
                         left join product_template as pt on pp.product_tmpl_id = pt.id
-                        left join uom_uom as uom on s_line.product_uom = uom.id
-                    where sm.picking_id = '{purchase_id}'
+                        left join uom_uom as uom on pt.uom_id = uom.id
+                        left join xres_maker as maker on pol.x_product_maker = maker.id
+                    where pol.order_id = '{purchase_id}'
                 """
 
         self._cr.execute(query)
@@ -111,8 +113,8 @@ class AbstractInventoryReport(models.AbstractModel):
         # add logo
         sheet.insert_image('A1', get_module_resource('maker_custom', 'images', 'logo.png'),
                            {'x_scale': 0.22, 'y_scale': 0.22})
-        delivery = self.env['stock.move'].search([('id', '=', purchase_id)])
-        company = delivery.company_id or " "
+        purchase = self.env['purchase.order'].search([('id', '=', purchase_id)])
+        company = purchase.company_id or " "
         name_company = company.name or " "
         street_company = company.street or " "
         sheet.insert_image('H1', get_module_resource('maker_custom', 'images', 'logoinfo.png'),
@@ -120,14 +122,14 @@ class AbstractInventoryReport(models.AbstractModel):
 
         sheet.merge_range("D5:G6", 'PURCHASE ORDER', quotation_format)
 
-        company_kh = delivery.partner_id or " "
+        company_kh = purchase.partner_id or " "
         name_company_kh = company_kh.name or " "
         street_company_kh = company_kh.street or " "
         phone_1 = company_kh.phone or " "
         phone_2 = company_kh.phone_sanitized or " "
-        contact = delivery.x_contact_id.name or " "
+        contact = purchase.x_contact_id.name or " "
         email = company_kh.email
-        function = delivery.x_contact_id.function
+        function = purchase.x_contact_id.function
         sheet.write("A7", "Messrs.", header_tieude)
         sheet.insert_image('A9', get_module_resource('maker_custom', 'images', 'icon_location.png'),
                            {'x_scale': 1, 'y_scale': 1})
@@ -151,39 +153,36 @@ class AbstractInventoryReport(models.AbstractModel):
         sheet.merge_range("B14:D14", email, tieude)
         # sheet.set_border(6, 0, 13, 3, 1)
 
-        sheet.write("G7", "DELIVERY No.", header_right)
+        sheet.write("G7", "PURCHASE No.", header_right)
         sheet.write("G8", "Date", header_right)
         sheet.write("G9", "Delivery Term.", header_right)
         sheet.write("G10", "Destination.", header_right)
         sheet.write("G11", "Delivery time.", header_right)
         sheet.write("G12", "Payment Term.", header_right)
-        sheet.write("G14", "Your PO No", header_right)
-
-        x_validity_day = delivery.x_validity_day or " "
-
+        sheet.write("G13", "Staffcode", header_right)
+        sheet.write("G14", "Your Quotation", header_right)
+        sheet.write("G15", "End-user", header_right)
+        sheet.write("G15", "Collaboration Job", header_right)
 
         # Tạo chuỗi định dạng "X week(s)"
+        purchase_no = purchase.name or ' '
+        x_purchase_date = purchase.date_approve or " "
+        formatted_date = x_purchase_date.strftime('%d-%b-%Y')
+        effective = purchase.effective_date or " "
+        effective_date = effective.strftime('%d-%b-%Y')
 
-        x_quotation_date = delivery.x_quotation_date or " "
-        formatted_date = x_quotation_date.strftime('%d-%b-%Y')
-        commitment_date = delivery.commitment_date or " "
-        weeks_difference = (commitment_date - x_quotation_date).days // 7
-        formatted_string = f"{weeks_difference} week(s)"
 
-        payment_term = delivery.payment_term_id.name or " "
-        x_lead_time = delivery.x_lead_time or " "
-        amount_total = delivery.amount_total
         sheet.insert_image('J7', get_module_resource('maker_custom', 'images', 'logo3.png'),
                            {'x_scale': 1, 'y_scale': 1})
-        partner_shipping_id = delivery.partner_shipping_id.street
-        sheet.merge_range("H7:I7", "QUOTATION No.", header_right3)
+
+        sheet.merge_range("H7:I7", purchase_no, header_right3)
         sheet.merge_range("H8:I8", formatted_date, header_right3)
-        sheet.merge_range("H9:I9", str(x_validity_day)+' day(s)', header_right1)
-        sheet.merge_range("H10:I10", x_lead_time, header_right1)
-        sheet.merge_range("H11:I11", partner_shipping_id, header_right1)
-        sheet.merge_range("H12:J12", formatted_string, header_right1)
-        sheet.merge_range("H13:J13", payment_term, header_right1)
-        sheet.merge_range("H14:J14", amount_total, header_right2)
+        sheet.merge_range("H9:I9", effective_date, header_right1)
+        sheet.merge_range("H10:I10", "x_lead_time", header_right1)
+        sheet.merge_range("H11:I11", "partner_shipping_id", header_right1)
+        sheet.merge_range("H12:J12", "formatted_string", header_right1)
+        sheet.merge_range("H13:J13", "payment_term", header_right1)
+        sheet.merge_range("H14:J14", "amount_total", header_right2)
 
 
         # table header
@@ -197,15 +196,15 @@ class AbstractInventoryReport(models.AbstractModel):
             "border_color": "#FFFFFF"
         })
 
-        sheet.write("A16", "No.", le_tren)
-        sheet.merge_range("B16:D16", "ITEMS / DESCRIPTION", le_tren)
-        sheet.write("E16", "MODEL", le_tren)
-        sheet.write("F16", "Quantity", le_tren)
-        sheet.write("G16", "Unit", le_tren)
-        sheet.write("H16", "CHECK", le_tren)
-        sheet.merge_range("I16:J16", "REMARK", le_tren)
+        sheet.write("A17", "No.", le_tren)
+        sheet.merge_range("B17:D17", "ITEMS / DESCRIPTION", le_tren)
+        sheet.write("E17", "MODEL", le_tren)
+        sheet.write("F17", "Quantity", le_tren)
+        sheet.write("G17", "Unit", le_tren)
+        sheet.write("H17", "AMOUNT (VND)", le_tren)
+        sheet.write("I17", "MAKER", le_tren)
         # table data
-        row = 17
+        row = 18
         stt = 0
         for report in result:
             sheet.write(row, 0, stt + 1, table_data)
@@ -214,16 +213,16 @@ class AbstractInventoryReport(models.AbstractModel):
             sheet.write(row, 5, report[2], table_data)
             sheet.write(row, 6, report[3], table_data)
             sheet.write(row, 7, report[4], quantity)
-            sheet.merge_range(row, 8,row,9, report[5], quantity)
-
+            sheet.write(row, 8, report[5], quantity)
             row += 1
             stt += 1
-        sheet.merge_range(row, 0,row,9, 'II – Shipping and payment documents come with', quantity)
-        amount_tax = delivery.amount_tax
+        amount_tax = purchase.amount_tax
+        amount_total = purchase.amount_total
+        amount_untaxed = purchase.amount_untaxed
         sheet.write(row, 7, "Sub Total", table_data)
-        sheet.write(row+1, 7, "Tax VAT", table_data)
-        sheet.write(row+2, 7, "GRAND TOTAL", table_data)
-        sheet.write(row, 8, "???", table_data)
+        sheet.write(row + 1, 7, "Tax VAT", table_data)
+        sheet.write(row + 2, 7, "GRAND TOTAL", table_data)
+        sheet.write(row, 8, amount_untaxed, table_data)
         sheet.write(row + 1, 8, amount_tax, table_data)
         sheet.write(row + 2, 8, amount_total, table_data)
 
@@ -240,15 +239,16 @@ class AbstractInventoryReport(models.AbstractModel):
             "align": "center", "valign": "vcenter", "text_wrap": True
         })
         sheet.merge_range(row + 4, 7, row + 4, 9, "NEOTECH SOLUTION JSC ", bottun_center)
-        sheet.write(row+4, 1, "Remark:", bottun_left1)
-        sheet.merge_range(row + 4, 2, row + 4, 6, "Warranty as manufacturer's standard and applied for main unit only.", bottun_left1)
-        sheet.merge_range(row + 4, 2, row + 4, 6, "By sign into this document, you confirm to receive the goods:",bottun_left1)
-        sheet.merge_range(row+5, 0,row+5, 6, "①    	Goods in good conditions and Same as mentioned on your PO.", bottun_left)
-        sheet.merge_range(row+6, 0,row+6, 6, "②	    All Appropriate documents shown above for this shipment.", bottun_left)
-        sheet.merge_range(row+7, 0,row+8, 6, "③	    All goods are completely installed and calibrated.", bottun_left)
+        sheet.write(row+4, 1, "Terms and Conditions", bottun_left1)
+        sheet.merge_range(row+4, 0,row+4, 6, "①	    Please inform the Deliver schedule once you approved this Order.", bottun_left1)
+        sheet.merge_range(row+5, 0,row+5, 6, "②	    Please send back the PO confirmation.", bottun_left)
+        sheet.merge_range(row+6, 0,row+6, 6, "③	    (for Service Order) All tax obligations that arise in Vietnam will be paid by Nihon Denkei Vietnam.", bottun_left)
 
-        sheet.merge_range(row+10, 0,row+11, 6, "for TOSHIBA TRANSMISSION & DISTRIBUTION SYSTEMS (VIETNAM) LTD", bottun_left)
-        sheet.merge_range(row+10, 7,row+10, 9, "for NEOTECH SOLUTION JSC", bottun_left)
+        sheet.merge_range(row+7, 1,row+7, 3, "TOSHIBA TRANSMITION", bottun_left)
+        sheet.merge_range(row + 8, 1, row + 8, 3, "We hereby agree and confirm our ", bottun_left)
+        sheet.merge_range(row + 9, 1, row + 9, 3, "acceptance of this order", bottun_left)
+
+        sheet.merge_range(row+7, 7,row+7, 9, "NEOTECH SOLUTION JSC", bottun_left)
 
         sheet.fit_to_pages(1, 0)
 
