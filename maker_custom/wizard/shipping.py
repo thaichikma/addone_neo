@@ -6,24 +6,25 @@ from odoo.exceptions import UserError
 from odoo.exceptions import ValidationError
 
 
-class AbstractInventoryReport(models.AbstractModel):
-    _name = "report.maker_custom.delivery"
+class AbstractAccountReport(models.AbstractModel):
+    _name = "report.maker_custom.account"
     _inherit = "report.report_xlsx.abstract"
 
     def generate_xlsx_report(self, workbook, data, partner):
-        picking_id = partner['id']
+        account_id = partner['id']
         query = f"""
-                    select COALESCE(sm.name, ''),
+                    select COALESCE(pt.name ->> 'en_US', ''),
                         COALESCE(pt.x_model, ''),
-                        COALESCE(sm.quantity_done, 0),
+                        COALESCE(aml.quantity, 0),
                         uom.name ->> 'en_US' as uom,
-                        COALESCE(sm.origin, ''),
-                        COALESCE(pt.note, '')
-                    from stock_move as sm
-                        left join product_product as pp on sm.product_id = pp.id
+                        COALESCE(aml.price_unit, 0),
+                        COALESCE(aml.price_subtotal, 0)
+                    from account_move_line as aml
+                        inner join product_product as pp on aml.product_id = pp.id
                         left join product_template as pt on pp.product_tmpl_id = pt.id
-                        left join uom_uom as uom on s_line.product_uom = uom.id
-                    where sm.picking_id = '{picking_id}'
+                        left join uom_uom as uom on aml.product_uom_id = uom.id
+						left join xres_maker as maker on aml.x_product_maker = maker.id
+                    where aml.move_id = '{account_id}'
                 """
 
         self._cr.execute(query)
@@ -111,8 +112,8 @@ class AbstractInventoryReport(models.AbstractModel):
         # add logo
         sheet.insert_image('A1', get_module_resource('maker_custom', 'images', 'logo.png'),
                            {'x_scale': 0.22, 'y_scale': 0.22})
-        delivery = self.env['stock.move'].search([('id', '=', picking_id)])
-        company = delivery.company_id or " "
+        account = self.env['account.move'].search([('id', '=', account_id)])
+        company = account.company_id or " "
         name_company = company.name or " "
         street_company = company.street or " "
         sheet.insert_image('H1', get_module_resource('maker_custom', 'images', 'logoinfo.png'),
@@ -120,14 +121,14 @@ class AbstractInventoryReport(models.AbstractModel):
 
         sheet.merge_range("D5:G6", 'Quotation', quotation_format)
 
-        company_kh = delivery.partner_id or " "
+        company_kh = account.partner_id or " "
         name_company_kh = company_kh.name or " "
         street_company_kh = company_kh.street or " "
         phone_1 = company_kh.phone or " "
         phone_2 = company_kh.phone_sanitized or " "
-        contact = delivery.x_contact_id.name or " "
+        contact = account.x_contact_id.name or " "
         email = company_kh.email
-        function = delivery.x_contact_id.function
+        function = account.x_contact_id.function
         sheet.write("A7", "Messrs.", header_tieude)
         sheet.insert_image('A9', get_module_resource('maker_custom', 'images', 'icon_location.png'),
                            {'x_scale': 1, 'y_scale': 1})
@@ -151,7 +152,7 @@ class AbstractInventoryReport(models.AbstractModel):
         sheet.merge_range("B14:D14", email, tieude)
         # sheet.set_border(6, 0, 13, 3, 1)
 
-        sheet.write("G7", "DELIVERY No.", header_right)
+        sheet.write("G7", "INVOICE No.", header_right)
         sheet.write("G8", "Date", header_right)
         sheet.write("G9", "Delivery Term.", header_right)
         sheet.write("G10", "Destination.", header_right)
@@ -159,31 +160,15 @@ class AbstractInventoryReport(models.AbstractModel):
         sheet.write("G12", "Payment Term.", header_right)
         sheet.write("G14", "Your PO No", header_right)
 
-        x_validity_day = delivery.x_validity_day or " "
 
-
-        # Tạo chuỗi định dạng "X week(s)"
-
-        x_quotation_date = delivery.x_quotation_date or " "
-        formatted_date = x_quotation_date.strftime('%d-%b-%Y')
-        commitment_date = delivery.commitment_date or " "
-        weeks_difference = (commitment_date - x_quotation_date).days // 7
-        formatted_string = f"{weeks_difference} week(s)"
-
-        payment_term = delivery.payment_term_id.name or " "
-        x_lead_time = delivery.x_lead_time or " "
-        amount_total = delivery.amount_total
-        sheet.insert_image('J7', get_module_resource('maker_custom', 'images', 'logo3.png'),
-                           {'x_scale': 1, 'y_scale': 1})
-        partner_shipping_id = delivery.partner_shipping_id.street
         sheet.merge_range("H7:I7", "QUOTATION No.", header_right3)
-        sheet.merge_range("H8:I8", formatted_date, header_right3)
-        sheet.merge_range("H9:I9", str(x_validity_day)+' day(s)', header_right1)
-        sheet.merge_range("H10:I10", x_lead_time, header_right1)
-        sheet.merge_range("H11:I11", partner_shipping_id, header_right1)
-        sheet.merge_range("H12:J12", formatted_string, header_right1)
-        sheet.merge_range("H13:J13", payment_term, header_right1)
-        sheet.merge_range("H14:J14", amount_total, header_right2)
+        sheet.merge_range("H8:I8", 'formatted_date', header_right3)
+        sheet.merge_range("H9:I9", '', header_right1)
+        sheet.merge_range("H10:I10", 'x_lead_time', header_right1)
+        sheet.merge_range("H11:I11", 'partner_shipping_id', header_right1)
+        sheet.merge_range("H12:J12", 'formatted_string', header_right1)
+        sheet.merge_range("H13:J13", 'payment_term', header_right1)
+        sheet.merge_range("H14:J14", 'amount_total', header_right2)
 
 
         # table header
@@ -219,13 +204,13 @@ class AbstractInventoryReport(models.AbstractModel):
             row += 1
             stt += 1
         sheet.merge_range(row, 0,row,9, 'II – Shipping and payment documents come with', quantity)
-        amount_tax = delivery.amount_tax
+        amount_tax = account.amount_tax
         sheet.write(row, 7, "Sub Total", table_data)
         sheet.write(row+1, 7, "Tax VAT", table_data)
         sheet.write(row+2, 7, "GRAND TOTAL", table_data)
         sheet.write(row, 8, "???", table_data)
-        sheet.write(row + 1, 8, amount_tax, table_data)
-        sheet.write(row + 2, 8, amount_total, table_data)
+        sheet.write(row + 1, 8, account, table_data)
+        sheet.write(row + 2, 8, account, table_data)
 
         bottun_left = workbook.add_format({
              "font_size": 7, "font_name": "Calibri",
