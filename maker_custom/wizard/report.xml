@@ -1,58 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
+<!--        sale order-->
         <record id="ms_report_stock_print_excel_report" model="ir.actions.report">
             <field name="name"></field>
             <field name="model">sale.order</field>
             <field name="report_type">xlsx</field>
             <field name="report_name">maker_custom.quotation</field>
             <field name="report_file">maker_custom.quotation</field>
-            <field name="print_report_name">'DN_%s' % (object.lay_ngay_hien_tai())</field>
-        </record>
-
-        <record id="delivery_print_excel_in_report" model="ir.actions.report">
-            <field name="name"></field>
-            <field name="model">sale.order</field>
-            <field name="report_type">xlsx</field>
-            <field name="report_name">maker_custom.delivery</field>
-            <field name="report_file">maker_custom.delivery</field>
-            <field name="print_report_name">'RN_%s' % (object.lay_ngay_hien_tai())</field>
-        </record>
-
-        <record id="purchase_print_excel_in_report" model="ir.actions.report">
-            <field name="name"></field>
-            <field name="model">sale.order</field>
-            <field name="report_type">xlsx</field>
-            <field name="report_name">maker_custom.delivery</field>
-            <field name="report_file">maker_custom.delivery</field>
-            <field name="print_report_name">'RN_%s' % (object.lay_ngay_hien_tai())</field>
-        </record>
-
-        <record id="packing_print_excel_in_report" model="ir.actions.report">
-            <field name="name"></field>
-            <field name="model">sale.order</field>
-            <field name="report_type">xlsx</field>
-            <field name="report_name">maker_custom.delivery</field>
-            <field name="report_file">maker_custom.delivery</field>
-            <field name="print_report_name">'RN_%s' % (object.lay_ngay_hien_tai())</field>
-        </record>
-
-        <record id="payment_print_excel_in_report" model="ir.actions.report">
-            <field name="name"></field>
-            <field name="model">sale.order</field>
-            <field name="report_type">xlsx</field>
-            <field name="report_name">maker_custom.delivery</field>
-            <field name="report_file">maker_custom.delivery</field>
-            <field name="print_report_name">'RN_%s' % (object.lay_ngay_hien_tai())</field>
-        </record>
-
-        <record id="shipping_print_excel_in_report" model="ir.actions.report">
-            <field name="name"></field>
-            <field name="model">sale.order</field>
-            <field name="report_type">xlsx</field>
-            <field name="report_name">maker_custom.delivery</field>
-            <field name="report_file">maker_custom.delivery</field>
-            <field name="print_report_name">'RN_%s' % (object.lay_ngay_hien_tai())</field>
+            <field name="print_report_name">'quotation_%s' % (object.lay_ngay_hien_tai())</field>
         </record>
 
 <!--        record purchase-->
@@ -75,7 +31,7 @@
             <field name="report_type">xlsx</field>
             <field name="report_name">maker_custom.purchase</field>
             <field name="report_file">maker_custom.purchase</field>
-            <field name="print_report_name">'RN_%s' % (object.lay_ngay_hien_tai())</field>
+            <field name="print_report_name">'purchase_%s' % (object.lay_ngay_hien_tai())</field>
         </record>
 
 <!--        report account -->
@@ -84,8 +40,12 @@
             <field name="model">account.move</field>
             <field name="inherit_id" ref="account.view_move_form"/>
             <field name="arch" type="xml">
-                <xpath expr="//button[@name='action_invoice_sent']" position="before">
-                        <button name="print_excel" string="Print excel" type="object" class="oe_highlight"
+                <xpath expr="//button[@name='action_post']" position="before">
+                        <button name="print_excel" string="INVOICE" type="object" class="oe_highlight"
+                       attrs="{'invisible': [('state', 'in', ('draft','sent'))]}"/>
+                    </xpath>
+                <xpath expr="//button[@name='action_post']" position="before">
+                        <button name="print_excel_payment" string="PAYMENT" type="object" class="oe_highlight"
                        attrs="{'invisible': [('state', 'in', ('draft','sent'))]}"/>
                     </xpath>
             </field>
@@ -97,7 +57,51 @@
             <field name="report_type">xlsx</field>
             <field name="report_name">maker_custom.account</field>
             <field name="report_file">maker_custom.account</field>
-            <field name="print_report_name">'RN_%s' % (object.lay_ngay_hien_tai())</field>
+            <field name="print_report_name">'account_%s' % (object.lay_ngay_hien_tai())</field>
+        </record>
+
+        <record id="ms_report_account_payment_print_excel_report" model="ir.actions.report">
+            <field name="name"></field>
+            <field name="model">account.move</field>
+            <field name="report_type">xlsx</field>
+            <field name="report_name">maker_custom.payment</field>
+            <field name="report_file">maker_custom.payment</field>
+            <field name="print_report_name">'payment_%s' % (object.lay_ngay_hien_tai())</field>
+        </record>
+
+<!--        stock_picking views-->
+        <record id="stock_picking_inherit_maker" model="ir.ui.view">
+            <field name="name">stock.picking.maker</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='button_validate']" position="before">
+                        <button name="print_excel" string="PRINT DO" type="object" class="oe_highlight"
+                       attrs="{'invisible': [('state', 'in', ('draft','sent'))]}"/>
+                    </xpath>
+                <xpath expr="//button[@name='button_validate']" position="before">
+                        <button name="print_excel_packing" string="PRINT PACKING LIST" type="object" class="oe_highlight"
+                       attrs="{'invisible': [('state', 'in', ('draft','sent'))]}"/>
+                    </xpath>
+            </field>
+        </record>
+
+        <record id="delivery_print_excel_in_report" model="ir.actions.report">
+            <field name="name"></field>
+            <field name="model">stock.picking</field>
+            <field name="report_type">xlsx</field>
+            <field name="report_name">maker_custom.delivery</field>
+            <field name="report_file">maker_custom.delivery</field>
+            <field name="print_report_name">'delivery_%s' % (object.lay_ngay_hien_tai())</field>
+        </record>
+
+        <record id="packing_print_excel_in_report" model="ir.actions.report">
+            <field name="name"></field>
+            <field name="model">stock.picking</field>
+            <field name="report_type">xlsx</field>
+            <field name="report_name">maker_custom.packing</field>
+            <field name="report_file">maker_custom.packing</field>
+            <field name="print_report_name">'packing_%s' % (object.lay_ngay_hien_tai())</field>
         </record>
     </data>
 

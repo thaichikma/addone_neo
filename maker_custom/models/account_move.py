@@ -15,9 +15,19 @@ class StockMoveLine(models.Model):
             self.x_product_maker = self.product_id.x_maker
             self.x_product_model = self.product_id.x_model
 
+class StockMove(models.Model):
+
+    _inherit = 'account.move'
+
+    x_contact_id = fields.Many2one('res.partner',  String='Contact')
     def print_excel(self):
         action = self.env.ref('maker_custom.ms_report_account_print_excel_report').read()[0]
         return action
+
+    def print_excel_payment(self):
+        action = self.env.ref('maker_custom.ms_report_account_payment_print_excel_report').read()[0]
+        return action
+
     def lay_ngay_hien_tai(self):
         ngay_hien_tai = datetime.now().strftime('%d_%m_%Y')
         return ngay_hien_tai

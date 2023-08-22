@@ -15,7 +15,10 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'product', 'sale', 'sale_stock', 'purchase', 'account', 'stock','report_xlsx','sale_management'],
+    'depends': ['base', 'product', 'sale', 'sale_stock',
+                'purchase', 'account', 'stock',
+                'payment',
+                'report_xlsx','sale_management'],
     # 'auto_install': True,
 
     # always loaded
@@ -35,12 +38,12 @@
     "assets": {
 
     },
-    'images': ['images/icon_contact.png',
-               'images/icon_email.png',
-               'images/icon_location.png',
-               'images/icon_mobile.png',
+    'images': ['images/contact.png',
+               'images/email.png',
+               'images/addess.png',
+               'images/company.png',
                'images/icon_position.png',
-               'images/icon_telephone.png',
+               'images/phone.png',
                'images/logo.png',
                'images/logo1.png',
                'images/logo2.png',
