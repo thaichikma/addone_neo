@@ -9,7 +9,10 @@
                 <!--                <xpath expr="//field[@name='date_order']" position="attributes">-->
                 <!--                         <attribute name="invisible">1</attribute>-->
                 <!--                </xpath>-->
-
+                <xpath expr="//button[@id='create_invoice']" position="before">
+                    <button name="print_excel" string="Print excel" type="object" class="oe_highlight"
+                   attrs="{'invisible': [('state', 'in', ('draft','sent'))]}"/>
+                </xpath>
                 <xpath expr="//field[@name='client_order_ref']" position="attributes">
                     <attribute name="invisible">1</attribute>
                 </xpath>
@@ -44,6 +47,7 @@
                     <field name="x_product_maker" force_save="1" readonly="1"/>
                     <field name="x_product_model" force_save="1" readonly="1"/>
                 </xpath>
+
             </field>
         </record>
 

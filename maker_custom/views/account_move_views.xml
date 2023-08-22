@@ -22,6 +22,10 @@
                     <field name="x_product_maker" force_save="1" readonly="1"/>
                     <field name="x_product_model" force_save="1" readonly="1"/>
                 </xpath>
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="x_contact_id" options="{'no_create': True}" string="Contact"
+                           domain="['|',('parent_id', '=', partner_id),('id', '=', partner_id),('type', '=', 'contact'),('parent_id', '!=', False)]"/>
+                </xpath>
             </field>
         </record>
 
