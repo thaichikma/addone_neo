@@ -62,7 +62,7 @@ class AbstractInventoryReport(models.AbstractModel):
 
         header_tieude = workbook.add_format({
             "bold": True, "font_size": 10, "font_name": "Roboto Condensed",
-            "align": "right", "valign": "vcenter", "font_color": "#5388BC"
+            "align": "left", "valign": "vcenter", "font_color": "#5388BC"
         })
         header_right = workbook.add_format({
             "bold": True, "font_size": 10, "font_name": "Roboto Condensed",
@@ -70,9 +70,6 @@ class AbstractInventoryReport(models.AbstractModel):
         })
         packing = self.env['stock.picking'].search([('id', '=', picking_id)])
         company = packing.company_id or " "
-        name_company = company.name or " "
-        street_company = company.street or " "
-
         sheet.merge_range("L1:AG4", 'PACKING LIST', quotation_format)
 
         company_kh = packing.partner_id or " "
@@ -129,28 +126,28 @@ class AbstractInventoryReport(models.AbstractModel):
             "bg_color": "#5388BC",  # Đặt màu nền đen
             "font_color": "#FFFFFF",  # Đặt màu chữ trắng
             "border": 1,  # Thêm viền
-            "border_color": "#FFFFFF"
+            "border_color": "#FFFFFF", "text_wrap": True
         })
-
+        sheet.set_row(14, 25)
         sheet.write("B15", "No.", le_tren)
         sheet.merge_range("C15:N15", "PRODUCTS \ ITEMS", le_tren)
         sheet.merge_range("O15:S15", "DETAILS", le_tren)
         sheet.merge_range("T15:U15", "Q'ty", le_tren)
-        sheet.merge_range("V15:X15", "NET Weight(kg)", le_tren)
-        sheet.merge_range("Y15:AA15", "Gross Weight(Kg)", le_tren)
-        sheet.merge_range("AB15:AG15", "Dimension(m)", le_tren)
+        sheet.merge_range("V15:X15", "NET Weight\n(kg)", le_tren)
+        sheet.merge_range("Y15:AA15", "Gross Weight\n(Kg)", le_tren)
+        sheet.merge_range("AB15:AG15", "Dimension\n(m)", le_tren)
         # table data
         table_data = workbook.add_format({
-            "font_size": 11, "border": 1, "font_name": "Roboto Condensed", "align": "center", "valign": "vcenter",
+            "font_size": 11, "border": 1, "font_name": "Roboto Condensed", "align": "center", "valign": "top",
             "border_color": "#5388BC"
         })
         product = workbook.add_format({
-            "font_size": 11, "border": 1, "font_name": "Roboto Condensed", "align": "left", "valign": "vcenter",
-            "border_color": "#5388BC", "text_wrap": True, "font_color": "#5388BC"
+            "font_size": 11, "border": 1, "font_name": "Roboto Condensed", "align": "left", "valign": "top",
+            "border_color": "#5388BC", "text_wrap": True
         })
         quantity = workbook.add_format({
-            "font_size": 10, "border": 1, "font_name": "Roboto Condensed", "align": "right", "valign": "vcenter",
-            "border_color": "#5388BC", "font_color": "#5388BC"
+            "font_size": 11, "border": 1, "font_name": "Roboto Condensed", "align": "right", "valign": "top",
+            "border_color": "#5388BC"
         })
         row = 15
         stt = 0
@@ -168,18 +165,18 @@ class AbstractInventoryReport(models.AbstractModel):
             row += 1
             stt += 1
         bottun_left = workbook.add_format({
-             "font_size": 7, "font_name": "Calibri",
+             "font_size": 11, "font_name": "Roboto Condensed Light",
             "align": "left", "valign": "vcenter", "text_wrap": True
         })
         bottun_left1 = workbook.add_format({
-            "bold": True, "font_size": 10, "font_name": "Calibri",
-            "align": "left", "valign": "vcenter", "text_wrap": True,"bottom": 1
+            "bold": True, "font_size": 9, "font_name": "Roboto Condensed Light",
+            "align": "left", "valign": "vcenter", "text_wrap": True, "font_color": "#5388BC"
         })
         bottun_center = workbook.add_format({
-            "bold": True, "font_size": 12, "font_name": "Calibri",
-            "align": "center", "valign": "vcenter", "text_wrap": True
+            "bold": True, "font_size": 11, "font_name": "Roboto Condensed Light",
+            "align": "center", "valign": "vcenter", "text_wrap": True, "font_color": "#5388BC"
         })
-        sheet.merge_range(row + 1, 24, row + 1, 30, "NEOTECH SOLUTION JSC ", bottun_center)
+        sheet.merge_range(row + 1, 23, row + 1, 31, "NEOTECH SOLUTION JSC ", bottun_center)
         sheet.merge_range(row+1, 1,row+1,2, "Remark:", bottun_left1)
 
         sheet.fit_to_pages(1, 0)

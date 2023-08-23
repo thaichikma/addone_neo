@@ -93,7 +93,6 @@ class AbstractInventoryReport(models.AbstractModel):
         sheet.merge_range("D11:N11", '', tieude)
         sheet.merge_range("D12:N12", phone_1, tieude)
         sheet.merge_range("D13:N13", email, tieude)
-        # sheet.set_border(6, 0, 13, 3, 1)
 
         sheet.merge_range("T7:W7", "DELIVERY #", header_tieude)
         sheet.write("X7", ":", header_right)
@@ -133,13 +132,16 @@ class AbstractInventoryReport(models.AbstractModel):
         sheet.merge_range("X15:AG15", "REMARK", le_tren)
         # table data
         table_data = workbook.add_format({
-            "font_size": 11, "border": 1,"font_name": "Roboto Condensed","align": "center", "valign": "vcenter","border_color":"#5388BC"
+            "font_size": 11, "border": 1, "font_name": "Roboto Condensed", "align": "center", "valign": "top",
+            "border_color": "#5388BC"
         })
         product = workbook.add_format({
-            "font_size": 11, "border": 1,"font_name": "Roboto Condensed","align": "left", "valign": "vcenter","border_color":"#5388BC","text_wrap": True
+            "font_size": 11, "border": 1, "font_name": "Roboto Condensed", "align": "left", "valign": "top",
+            "border_color": "#5388BC", "text_wrap": True
         })
         quantity = workbook.add_format({
-            "font_size": 10, "border": 1,"font_name": "Roboto Condensed","align": "right", "valign": "vcenter","border_color":"#5388BC"
+            "font_size": 11, "border": 1, "font_name": "Roboto Condensed", "align": "right", "valign": "top",
+            "border_color": "#5388BC"
         })
         row = 15
         stt = 0

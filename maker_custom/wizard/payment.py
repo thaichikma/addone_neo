@@ -116,7 +116,7 @@ class AbstractPaymentReport(models.AbstractModel):
 
         # table header
         le_tren = workbook.add_format({
-            "bold": True, "font_size": 10,
+            "bold": True, "font_size": 11,
             "font_name": "Roboto Condensed",
             "align": "left", "valign": "vcenter",
             "bg_color": "#5388BC",  # Đặt màu nền đen
@@ -130,14 +130,14 @@ class AbstractPaymentReport(models.AbstractModel):
             "font_name": "Roboto Condensed",
             "align": "left", "valign": "vcenter"
         })
-        sheet.merge_range("B16:AA16", "I. Item, Descriptions, PO, Ordering amount", le_tren)
+        sheet.merge_range("B16:AA16", "Item, Descriptions, PO, Ordering amount", le_tren)
         sheet.merge_range("B17:F17", "Your Purchase No", table_data)
         sheet.merge_range("G17:AA17", "", header_right)
         sheet.merge_range("B18:F18", "Our VAT Invoice", table_data)
-        sheet.merge_range("G18:AA18", account.partner_id.vat, header_right)
+        sheet.merge_range("G18:AA18", "", header_right)
         # II. Payment Method, Duedate
         formatted_date = account.invoice_date_due.strftime('%d-%b-%Y')
-        sheet.merge_range("B20:AA20", "II. Payment Method, Duedate", le_tren)
+        sheet.merge_range("B20:AA20", "Payment Method, Duedate", le_tren)
         sheet.merge_range("B21:F21", "Payment Amount", table_data)
         sheet.merge_range("G21:AA21", account.amount_total, header_right)
         p = inflect.engine()
@@ -153,7 +153,7 @@ class AbstractPaymentReport(models.AbstractModel):
         bank = self.env['res.partner.bank'].search([('company_id', '=', account.company_id.id)], limit=1)
         amount_in_words = num2words(account.amount_total, lang='en').replace(',', '')
         amount_in_words = amount_in_words.replace('-', ' ').replace(',', ' ').replace(' and', ' ').title()
-        sheet.merge_range("B26:AA26", "IIi. Banking Information", le_tren)
+        sheet.merge_range("B26:AA26", "Banking Information", le_tren)
         sheet.merge_range("B27:F27", "Beneficiary", table_data)
         sheet.merge_range("G27:AA27", account.company_id.name, header_right)
         sheet.merge_range("B28:F28", "Account No.", table_data)
@@ -163,13 +163,12 @@ class AbstractPaymentReport(models.AbstractModel):
         sheet.merge_range("B31:F31", "Address", table_data)
         sheet.merge_range("G31:AA31", account.partner_id.street, header_right)
 
-        # sheet.merge_range("B25:C25", "Payment Amount", header_right)
-        # sheet.merge_range("E25:I25", str(account.amount_total) + 'VND', header_right)
-        # sheet.merge_range("B26:C26", "Amount in Words", header_right)
-        # sheet.merge_range("E26:I26", str(amount_in_words) + ' Vietnamese Dong only', header_right)
-
         # bottom table
-        sheet.merge_range("B34:C34", "NOTE:", header_right)
+        bottun_left1 = workbook.add_format({
+            "font_size": 11, "font_name": "Roboto Condensed Light","font_color": "#5388BC",
+            "align": "left", "valign": "vcenter", "text_wrap": True,
+        })
+        sheet.merge_range("B34:C34", "NOTE:", bottun_left1)
         sheet.merge_range("Y34:AF34", "NEOTECH SOLUTION JSC",
                           header_right)
 

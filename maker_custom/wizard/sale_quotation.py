@@ -153,15 +153,15 @@ class AbstractInventoryReport(models.AbstractModel):
         sheet.merge_range("AC15:AG15", "AMOUNT(VND)", le_tren)
         # table data
         table_data = workbook.add_format({
-            "font_size": 11, "border": 1, "font_name": "Roboto Condensed", "align": "center", "valign": "vcenter",
+            "font_size": 11, "border": 1, "font_name": "Roboto Condensed", "align": "center", "valign": "top",
             "border_color": "#5388BC"
         })
         product = workbook.add_format({
-            "font_size": 11, "border": 1, "font_name": "Roboto Condensed", "align": "left", "valign": "vcenter",
+            "font_size": 11, "border": 1, "font_name": "Roboto Condensed", "align": "left", "valign": "top",
             "border_color": "#5388BC", "text_wrap": True
         })
         quantity = workbook.add_format({
-            "font_size": 10, "border": 1, "font_name": "Roboto Condensed", "align": "right", "valign": "vcenter",
+            "font_size": 11, "border": 1, "font_name": "Roboto Condensed", "align": "right", "valign": "top",
             "border_color": "#5388BC"
         })
         row = 15
@@ -172,7 +172,7 @@ class AbstractInventoryReport(models.AbstractModel):
             sheet.merge_range(row, 2, row, 13, report[0], product)
             sheet.merge_range(row, 14, row, 20, 'Model: ' + str(report[1])
                               + '\nMaker: ' + str(report[6])
-                              + '\nLead-Time: ', product)
+                              + '\nLead-Time: '+str(quotation.x_lead_time), product)
             sheet.write(row, 21, report[2], quantity)
             sheet.write(row, 22, report[3], table_data)
             sheet.merge_range(row, 23, row, 27, report[4], quantity)
@@ -202,6 +202,10 @@ class AbstractInventoryReport(models.AbstractModel):
             "bold": True, "font_size": 9, "font_name": "Roboto Condensed Light",
             "align": "center", "valign": "vcenter", "text_wrap": True
         })
+        bottun_center1 = workbook.add_format({
+            "bold": True, "font_size": 9, "font_name": "Roboto Condensed Light",
+            "align": "center", "valign": "vcenter", "text_wrap": True, "font_color": "#5388BC"
+        })
         sheet.merge_range(row + 2, 1, row + 2, 6, "Terms and Conditions", bottun_left)
         sheet.write(row + 3, 1, "1", bottun_center)
         sheet.write(row + 4, 1, "2", bottun_center)
@@ -215,7 +219,7 @@ class AbstractInventoryReport(models.AbstractModel):
         sheet.merge_range(row + 8, 2, row + 9, 22,
                           "Please note that the bank fee is fully covered by the payer.Once order has been confirmed and processed, cancellation fee will be applied.",
                           bottun_left1)
-        sheet.merge_range(row + 5, 24, row + 5, 30, "NEOTECH SOLUTION JSC", bottun_center)
+        sheet.merge_range(row + 5, 24, row + 5, 30, "NEOTECH SOLUTION JSC", bottun_center1)
 
         sheet.fit_to_pages(1, 0)
 
