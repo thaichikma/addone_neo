@@ -49,51 +49,23 @@ class AbstractInventoryReport(models.AbstractModel):
         for set_row in range(1000):
             sheet.set_row(set_row, 18)
         # style format
-        normal = workbook.add_format({"font_size": 11,
-                                      "font_name": "Roboto Condensed"})
-        normal_border = workbook.add_format({"font_size": 12, "border": 2, "font_name": "Times New Roman"})
-        normal.set_text_wrap()
-        normal_border.set_text_wrap()
-        table_header = workbook.add_format({
-            "font_size": 11,
-            "font_name": "Roboto Condensed",
-            "border": 1,
-            "align": "left", "valign": "vcenter", "text_wrap": True
-        })
-        table_header.set_text_wrap()
-
-        table_data = workbook.add_format({
-            "font_size": 11, "border": 1,
-            "font_name": "Roboto Condensed",
-            "align": "center", "valign": "vcenter"
-        })
-        product = workbook.add_format({
-            "font_size": 11, "border": 1,
-            "font_name": "Roboto Condensed",
-            "align": "left", "valign": "vcenter", "text_wrap": True
-        })
-        quantity = workbook.add_format({
-            "font_size": 10, "border": 1,
-            "font_name": "Roboto Condensed",
-            "align": "right", "valign": "vcenter"
-        })
         tieude = workbook.add_format({
             "font_size": 10,
             "font_name": "Roboto Condensed",
-            "align": "left",
+            "align": "left","valign": "top"
         })
         quotation_format = workbook.add_format({
             "font_size": 36, "bold": True,
             "font_name": "Roboto Condensed",
-            "align": "center", "font_color": "#5388BC",
+            "align": "right", "font_color": "#0070C0","valign": "top"
         })
 
         header_tieude = workbook.add_format({
-            "bold": True, "font_size": 10, "font_name": "Times New Roman",
+            "bold": True, "font_size": 10, "font_name": "Roboto Condensed",
             "align": "right", "valign": "vcenter", "font_color": "#5388BC"
         })
         header_right = workbook.add_format({
-            "bold": True, "font_size": 10, "font_name": "Calibri",
+            "bold": True, "font_size": 10, "font_name": "Roboto Condensed",
             "align": "left", "valign": "vcenter"
         })
         packing = self.env['stock.picking'].search([('id', '=', picking_id)])
@@ -101,7 +73,7 @@ class AbstractInventoryReport(models.AbstractModel):
         name_company = company.name or " "
         street_company = company.street or " "
 
-        sheet.merge_range("L1:AG4", 'Quotation', quotation_format)
+        sheet.merge_range("L1:AG4", 'PACKING LIST', quotation_format)
 
         company_kh = packing.partner_id or " "
         name_company_kh = company_kh.name or " "
@@ -123,26 +95,27 @@ class AbstractInventoryReport(models.AbstractModel):
 
         sheet.merge_range("D7:N8", name_company_kh, tieude)
         sheet.merge_range("D9:N10", street_company_kh, tieude)
-        sheet.merge_range("D11:N11", 'contact', tieude)
+        sheet.merge_range("D11:N11", '', tieude)
         sheet.merge_range("D12:N12", phone_1, tieude)
         sheet.merge_range("D13:N13", email, tieude)
         # sheet.set_border(6, 0, 13, 3, 1)
 
-        sheet.merge_range("T7:W7", "DELIVERY #", header_tieude)
+        sheet.merge_range("T7:W7", "PACKING #", header_tieude)
         sheet.write("X7", ":", header_right)
-        sheet.merge_range("Y7:AG7", "INVOICE #", header_right)
+        sheet.merge_range("Y7:AG7", packing.name, tieude)
 
         sheet.merge_range("T8:W8", "Date", header_right)
         sheet.write("X8", ":", header_right)
-        sheet.merge_range("Y8:AG8", packing.scheduled_date, header_right)
+        format_date = packing.scheduled_date.strftime('%d/%m/%Y')
+        sheet.merge_range("Y8:AG8", format_date, tieude)
 
         sheet.merge_range("T9:W9", "Delivery Term", header_right)
         sheet.write("X9", ":", header_right)
-        sheet.merge_range("Y9:AG9", "Delivery Term", header_right)
+        sheet.merge_range("Y9:AG9", "", tieude)
 
         sheet.merge_range("T10:W10", "Your PO #", header_right)
         sheet.write("X10", ":", header_right)
-        sheet.merge_range("Y10:AG10", "Your PO #", header_right)
+        sheet.merge_range("Y10:AG10", "", tieude)
 
         sheet.insert_image('AD7', get_module_resource('maker_custom', 'images', 'logo3.png'),
                            {'x_scale': 1, 'y_scale': 1})
@@ -167,23 +140,33 @@ class AbstractInventoryReport(models.AbstractModel):
         sheet.merge_range("Y15:AA15", "Gross Weight(Kg)", le_tren)
         sheet.merge_range("AB15:AG15", "Dimension(m)", le_tren)
         # table data
-        row = 17
-        stt = 0
+        table_data = workbook.add_format({
+            "font_size": 11, "border": 1, "font_name": "Roboto Condensed", "align": "center", "valign": "vcenter",
+            "border_color": "#5388BC"
+        })
+        product = workbook.add_format({
+            "font_size": 11, "border": 1, "font_name": "Roboto Condensed", "align": "left", "valign": "vcenter",
+            "border_color": "#5388BC", "text_wrap": True, "font_color": "#5388BC"
+        })
+        quantity = workbook.add_format({
+            "font_size": 10, "border": 1, "font_name": "Roboto Condensed", "align": "right", "valign": "vcenter",
+            "border_color": "#5388BC", "font_color": "#5388BC"
+        })
         row = 15
         stt = 0
         for report in result:
-            sheet.merge_range(row, 1, row + 2, 1, stt + 1, table_data)
-            sheet.merge_range(row, 2, row + 2, 13, report[0], product)
-            sheet.merge_range(row, 14, row, 18, 'Model: ' + str(report[1]), product)
-            sheet.merge_range(row + 1, 14, row + 2, 18, 'Maker: ' + str(report[6]), product)
-            sheet.merge_range(row, 19, row + 2, 19, report[2], quantity)
-            sheet.merge_range(row, 20, row + 2, 20, report[3], table_data)
-            sheet.merge_range(row, 21, row + 2, 23, report[4], quantity)
-            sheet.merge_range(row, 24, row + 2, 26, report[5], quantity)
-            sheet.merge_range(row, 27, row + 2, 32, report[7], quantity)
-            row += 3
+            sheet.set_row(row, 54)
+            sheet.write(row, 1, stt + 1, table_data)
+            sheet.merge_range(row, 2, row, 13, report[0], product)
+            sheet.merge_range(row, 14, row, 18, 'Model: ' + str(report[1])
+                              + '\nMaker: ' + str(report[6]), product)
+            sheet.write(row, 19, report[2], quantity)
+            sheet.write(row, 20, report[3], table_data)
+            sheet.merge_range(row, 21, row, 23, report[4], quantity)
+            sheet.merge_range(row, 24, row, 26, report[5], quantity)
+            sheet.merge_range(row, 27, row, 32, report[7], quantity)
+            row += 1
             stt += 1
-
         bottun_left = workbook.add_format({
              "font_size": 7, "font_name": "Calibri",
             "align": "left", "valign": "vcenter", "text_wrap": True
@@ -196,7 +179,7 @@ class AbstractInventoryReport(models.AbstractModel):
             "bold": True, "font_size": 12, "font_name": "Calibri",
             "align": "center", "valign": "vcenter", "text_wrap": True
         })
-        sheet.merge_range(row + 4, 24, row + 4, 30, "NEOTECH SOLUTION JSC ", bottun_center)
+        sheet.merge_range(row + 1, 24, row + 1, 30, "NEOTECH SOLUTION JSC ", bottun_center)
         sheet.merge_range(row+1, 1,row+1,2, "Remark:", bottun_left1)
 
         sheet.fit_to_pages(1, 0)
