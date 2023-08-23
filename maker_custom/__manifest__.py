@@ -50,6 +50,7 @@
                'images/logo3.png',
                'images/signature.png',
                 'images/logoinfo.png',
+                'images/logoneo.png',
 
                ],
     # only loaded in demonstration mode
