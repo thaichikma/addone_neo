@@ -155,15 +155,15 @@ class AbstractAccountReport(models.AbstractModel):
         sheet.merge_range("AC15:AG15", "AMOUNT(VND)", le_tren)
         # table data
         table_data = workbook.add_format({
-            "font_size": 11, "border": 1, "font_name": "Roboto Condensed", "align": "center", "valign": "vcenter",
+            "font_size": 11, "border": 1, "font_name": "Roboto Condensed", "align": "center", "valign": "top",
             "border_color": "#5388BC"
         })
         product = workbook.add_format({
-            "font_size": 11, "border": 1, "font_name": "Roboto Condensed", "align": "left", "valign": "vcenter",
+            "font_size": 11, "border": 1, "font_name": "Roboto Condensed", "align": "left", "valign": "top",
             "border_color": "#5388BC", "text_wrap": True
         })
         quantity = workbook.add_format({
-            "font_size": 10, "border": 1, "font_name": "Roboto Condensed", "align": "right", "valign": "vcenter",
+            "font_size": 11, "border": 1, "font_name": "Roboto Condensed", "align": "right", "valign": "top",
             "border_color": "#5388BC"
         })
         row = 15
@@ -196,18 +196,18 @@ class AbstractAccountReport(models.AbstractModel):
             "align": "left", "valign": "vcenter", "text_wrap": True, "font_color": "#5388BC"
         })
         bottun_left1 = workbook.add_format({
-            "bold": True, "font_size": 9, "font_name": "Roboto Condensed Light",
+            "font_size": 9, "font_name": "Roboto Condensed Light",
             "align": "left", "valign": "top", "text_wrap": True,
         })
         bottun_center = workbook.add_format({
             "bold": True, "font_size": 9, "font_name": "Roboto Condensed Light",
-            "align": "center", "valign": "vcenter", "text_wrap": True
+            "align": "center", "valign": "vcenter", "text_wrap": True, "font_color": "#5388BC"
         })
         sheet.merge_range(row + 2, 1, row + 2, 6, "Amount in Words", bottun_left)
         p = inflect.engine()
         amount_text = p.number_to_words(amount_total, decimal='point', andword=', ')
         text_money = amount_text.capitalize()
-        sheet.merge_range(row + 3, 2, row + 5, 20, str(text_money) + " Vietnamese dong.",
+        sheet.merge_range(row + 3, 1, row + 5, 20, str(text_money) + " Vietnamese dong.",
                           bottun_left1)
 
         sheet.merge_range(row + 5, 24, row + 5, 30, "NEOTECH SOLUTION JSC", bottun_center)

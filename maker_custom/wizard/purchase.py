@@ -159,15 +159,15 @@ class AbstractPurchaseReport(models.AbstractModel):
         sheet.merge_range("AC15:AG15", "AMOUNT(VND)", le_tren)
         # table data
         table_data = workbook.add_format({
-            "font_size": 11, "border": 1, "font_name": "Roboto Condensed", "align": "center", "valign": "vcenter",
+            "font_size": 11, "border": 1, "font_name": "Roboto Condensed", "align": "center", "valign": "top",
             "border_color": "#5388BC"
         })
         product = workbook.add_format({
-            "font_size": 11, "border": 1, "font_name": "Roboto Condensed", "align": "left", "valign": "vcenter",
+            "font_size": 11, "border": 1, "font_name": "Roboto Condensed", "align": "left", "valign": "top",
             "border_color": "#5388BC", "text_wrap": True
         })
         quantity = workbook.add_format({
-            "font_size": 10, "border": 1, "font_name": "Roboto Condensed", "align": "right", "valign": "vcenter",
+            "font_size": 11, "border": 1, "font_name": "Roboto Condensed", "align": "right", "valign": "top",
             "border_color": "#5388BC"
         })
         row = 15
@@ -220,7 +220,7 @@ class AbstractPurchaseReport(models.AbstractModel):
         sheet.merge_range(row + 8, 2, row + 9, 13, name_company_kh, bottun_center)
         sheet.merge_range(row + 8, 19, row + 9, 30, "NEOTECH SOLUTION JSC", bottun_center)
         sheet.merge_range(row + 10, 2, row + 11, 13, "We hereby agree and confirm \n our acceptance of this order",
-                          bottun_center)
+                          bottun_left1)
         sheet.merge_range(row + 15, 2, row + 15, 13, "Co. Stamp & Signature", bottun_center)
 
 
