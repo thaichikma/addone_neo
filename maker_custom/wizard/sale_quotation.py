@@ -136,6 +136,15 @@ class AbstractInventoryReport(models.AbstractModel):
             "border": 1,  # Thêm viền
             "border_color": "#FFFFFF"
         })
+        sub_and_vat1 = workbook.add_format({
+            "bold": True, "font_size": 10,
+            "font_name": "Roboto Condensed",
+            "align": "right", "valign": "vcenter",
+            "bg_color": "#5388BC",  # Đặt màu nền đen
+            "font_color": "#FFFFFF",  # Đặt màu chữ trắng
+            "border": 1,  # Thêm viền
+            "border_color": "#FFFFFF"
+        })
         sub_and_vat = workbook.add_format({
             "bold": True, "font_size": 10,
             "font_name": "Roboto Condensed",
@@ -185,10 +194,10 @@ class AbstractInventoryReport(models.AbstractModel):
         amount_untaxed = quotation.amount_untaxed
         sheet.merge_range(row, 23, row, 27, "Sub Total", sub_and_vat)
         sheet.merge_range(row + 1, 23, row + 1, 27, "Tax VAT", sub_and_vat)
-        sheet.merge_range(row + 2, 23, row + 2, 27, "GRAND TOTAL", le_tren)
+        sheet.merge_range(row + 2, 23, row + 2, 27, "GRAND TOTAL", sub_and_vat1)
         sheet.merge_range(row, 28, row, 32, amount_untaxed, sub_and_vat)
         sheet.merge_range(row + 1, 28, row + 1, 32, amount_tax, sub_and_vat)
-        sheet.merge_range(row + 2, 28, row + 2, 32, amount_total, le_tren)
+        sheet.merge_range(row + 2, 28, row + 2, 32, amount_total, sub_and_vat1)
 
         bottun_left = workbook.add_format({
             "font_size": 9, "font_name": "Roboto Condensed Light",
