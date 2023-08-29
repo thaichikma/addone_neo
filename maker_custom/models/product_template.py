@@ -7,6 +7,8 @@ class ProductTemplate(models.Model):
 
     x_maker = fields.Many2one("xres.maker", "Maker", copy=False)
     x_model = fields.Char("Model",copy=False)
+    x_name_description = fields.Html(compute="_compute_name_description", store=True)
+
 
     @api.constrains('x_model','x_maker')
     def validate_model_maker(self):
@@ -24,6 +26,14 @@ class ProductTemplate(models.Model):
             raise ValidationError(_('Error ! Model and Maker are duplicated'))
 
         return True
+
+    @api.depends('name', 'description')
+    def _compute_name_description(self):
+        for line in self:
+            if line.name or line.description:
+                line.x_name_description = f'<p>{line.name or ""}</p><p>{line.description or ""}</p>'
+            else:
+                line.x_name_description = ""
 
 
 class XResMarker(models.Model):
