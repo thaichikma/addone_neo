@@ -142,10 +142,19 @@ class AbstractPurchaseReport(models.AbstractModel):
             "border": 1,  # Thêm viền
             "border_color": "#FFFFFF"
         })
+        sub_and_vat1 = workbook.add_format({
+            "bold": True, "font_size": 10,
+            "font_name": "Roboto Condensed",
+            "align": "right", "valign": "vcenter",
+            "bg_color": "#5388BC",  # Đặt màu nền đen
+            "font_color": "#FFFFFF",  # Đặt màu chữ trắng
+            "border": 1,  # Thêm viền
+            "border_color": "#FFFFFF"
+        })
         sub_and_vat = workbook.add_format({
             "bold": True, "font_size": 10,
             "font_name": "Roboto Condensed",
-            "align": "center", "valign": "vcenter",
+            "align": "right", "valign": "vcenter",
             "bg_color": "#BFBFBF",  # Đặt màu nền đen
             "font_color": "#FFFFFF",  # Đặt màu chữ trắng
             "border_color": "#5388BC"
@@ -190,10 +199,10 @@ class AbstractPurchaseReport(models.AbstractModel):
         amount_untaxed = purchase.amount_untaxed
         sheet.merge_range(row, 23, row, 27, "Sub Total", sub_and_vat)
         sheet.merge_range(row+1, 23, row+1, 27, "Tax VAT", sub_and_vat)
-        sheet.merge_range(row+2, 23, row+2, 27, "GRAND TOTAL", le_tren)
+        sheet.merge_range(row+2, 23, row+2, 27, "GRAND TOTAL", sub_and_vat1)
         sheet.merge_range(row, 28, row, 32, amount_untaxed, sub_and_vat)
         sheet.merge_range(row+1, 28, row+1, 32, amount_tax, sub_and_vat)
-        sheet.merge_range(row+2, 28, row+2, 32, amount_total, le_tren)
+        sheet.merge_range(row+2, 28, row+2, 32, amount_total, sub_and_vat1)
 
         bottun_left = workbook.add_format({
              "font_size": 9, "font_name": "Roboto Condensed Light",
@@ -213,8 +222,8 @@ class AbstractPurchaseReport(models.AbstractModel):
         sheet.write(row + 5, 1, "3", bottun_center)
         sheet.merge_range(row + 3, 2, row + 3, 22, "Please inform the Deliver schedule once you confirm this Order.", bottun_left1)
         sheet.merge_range(row + 4, 2, row + 4, 22, "Please send back the PO confirmation", bottun_left1)
-        sheet.merge_range(row + 5, 2, row + 5, 22, "Maker will extend local support to our engineer who is based in Hanoi,", bottun_left1)
-        sheet.merge_range(row + 6, 2, row + 6, 22, " encompassing services such as installation, trial run, basic training, and warranty support", bottun_left1)
+        sheet.merge_range(row + 5, 2, row + 6, 22, "Maker will extend local support to our engineer who is based in Hanoi,\n"
+                                                   " encompassing services such as installation, trial run, basic training, and warranty support", bottun_left1)
 
 
         sheet.merge_range(row + 8, 2, row + 9, 13, name_company_kh, bottun_center)
