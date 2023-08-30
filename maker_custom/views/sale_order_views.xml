@@ -65,7 +65,7 @@
             </field>
         </record>
 
-        maker
+<!--        maker-->
         <record id="maker_form_view" model="ir.ui.view">
             <field name="name">product.category.form</field>
             <field name="model">product.category</field>
