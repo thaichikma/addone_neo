@@ -65,18 +65,18 @@
             </field>
         </record>
 
-<!--        maker-->
-<!--        <record id="maker_form_view" model="ir.ui.view">-->
-<!--            <field name="name">product.category.form</field>-->
-<!--            <field name="model">product.category</field>-->
-<!--            <field name="arch" type="xml">-->
-<!--                <form class="oe_form_configuration">-->
-<!--                    <sheet>-->
-<!--                            <field name="name"/>-->
-<!--                    </sheet>-->
-<!--                </form>-->
-<!--            </field>-->
-<!--        </record>-->
+        maker
+        <record id="maker_form_view" model="ir.ui.view">
+            <field name="name">product.category.form</field>
+            <field name="model">product.category</field>
+            <field name="arch" type="xml">
+                <form class="oe_form_configuration">
+                    <sheet>
+                            <field name="name"/>
+                    </sheet>
+                </form>
+            </field>
+        </record>
 
         <record id="xres_maker_list_view" model="ir.ui.view">
             <field name="name">product.category.list</field>
