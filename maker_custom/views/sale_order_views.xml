@@ -39,6 +39,7 @@
                 </xpath>
                 <xpath expr="//field[@name='date_order']" position="after">
                     <field name="commitment_date"/>
+					<field name="expected_date"/>
                     <field name="incoterm"/>
                     <field name="incoterm_location"/>
                 </xpath>
