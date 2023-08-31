@@ -7,10 +7,10 @@
     'name': 'Report Designer (XLSX, XLSM)',
     'version': '1.3.21',
     'category': 'Extra Tools',
-    'summary': 'Report Designer allows to Create and Print various Financial and Analytical reports in MS Excel format (XLSX, XLSM)',     
+    'summary': 'Report Designer allows to Create and Print various Financial and Analytical reports in MS Excel format (XLSX, XLSM)',
     'price': 299.00,
     'currency': 'EUR',
-    "license": "OPL-1",     
+    "license": "OPL-1",
     'description': """
 Report Designer for Odoo.
 ====================================
@@ -40,8 +40,8 @@ Report Excel Designer for Odoo.
     'assets': {
         'web.assets_backend': [
             'report_excel/static/src/js/*.js',
-            'report_excel/static/src/css/report_excel_modal_dialog.css',
-            'report_excel/static/src/xml/templates.xml',
+            'report_excel/static/src/css/*.css',
+            'report_excel/static/src/xml/*.xml',
         ],
     },
 

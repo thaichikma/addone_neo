@@ -1,12 +1,12 @@
 /** @odoo-module **/
 //odoo.define('report_excel.field', function(require){"use strict";
 import { registry } from "@web/core/registry";
-import fieldRegistry from 'web.field_registry';
+//import fieldRegistry from 'web.field_registry';
 import config from 'web.config';
 import fieldUtils from 'web.field_utils';
 
 var AbstractField = require('web.AbstractField');
-//var Registry = require('web.field_registry');
+var Registry = require('web.field_registry');
 var ModelFieldSelector = require("report_excel.ModelFieldSelectorExt");
 //var field_utils = require ("web.field_utils");
 //var config = require('web.config');
@@ -24,28 +24,28 @@ var ReportField = AbstractField.extend({
     	this.valid = true;
         this.options = _.defaults(this.options || {}, {
             in_dialog: false,
-            model: undefined, 
-            fs_filters: {}, 
+            model: undefined,
+            fs_filters: {},
         });
     },
     start: function() {
-        this.model = _get_model.call(this); 
+        this.model = _get_model.call(this);
         if (!this.readonly){
 	        this.fieldSelector = new ModelFieldSelector(
-	        		this, 
-	        		this.model, 
-	        		this.value ? this.value.split(".") : [], 
+	        		this,
+	        		this.model,
+	        		this.value ? this.value.split(".") : [],
 	        		{
 					readonly: this.get("readonly"),
 					fs_filters: this.options.fs_filters,
 					debugMode: config.isDebug(),
 					}
 	        		);
-	        this.fieldSelector.prependTo(this.$el);        
+	        this.fieldSelector.prependTo(this.$el);
         }else{
         	this.displayValue = this.value;
-        	var fields = this.value.split(".");        	
-        	this.el.textContent = fields; 
+        	var fields = this.value.split(".");
+        	this.el.textContent = fields;
         };
         function _get_model() {
             if (this.options.model) {
@@ -94,7 +94,7 @@ var ReportField = AbstractField.extend({
             couldNotParse = true;
         }
         if (selectedField.type === "boolean") {
-            if (!_.isBoolean(this.value)) { 
+            if (!_.isBoolean(this.value)) {
                 this.value = !!parseFloat(this.value);
             }
         } else if (selectedField.type === "selection") {
@@ -103,14 +103,14 @@ var ReportField = AbstractField.extend({
             }
         } else if (_.contains(["date", "datetime"], selectedField.type)) {
             if (couldNotParse || _.isBoolean(this.value)) {
-                this.value = field_utils.parse[selectedField.type](field_utils.format[selectedField.type](moment())).toJSON(); 
+                this.value = field_utils.parse[selectedField.type](field_utils.format[selectedField.type](moment())).toJSON();
             } else {
-                this.value = this.value.toJSON(); 
+                this.value = this.value.toJSON();
             }
         } else {
             if (_.isBoolean(this.value)) {
                 this.value = "";
-            } else if (_.isObject(this.value) && !_.isArray(this.value)) { 
+            } else if (_.isObject(this.value) && !_.isArray(this.value)) {
                 this.value = this.value.id || value || "";
             }
         }
@@ -125,9 +125,10 @@ var ReportField = AbstractField.extend({
      */
     isValid: function () {
     	return (!this.fieldSelector.isValid() || !(this.fieldSelector.chain.length)) ? false : true ;
-    },    
+    },
 });
-fieldRegistry.add('report_field', ReportField);
+registry.add('report_field', ReportField);
 //registry.category("fields").add("report_field", ReportField);
+//registry.category("views").add("crm_kanban", crmKanbanView);
 //return {}
 //});
