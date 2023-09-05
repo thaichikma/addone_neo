@@ -30,7 +30,7 @@ class StockMove(models.Model):
 
     _inherit = 'stock.move'
 
-    sequence_number = fields.Integer(string='#', compute='_compute_sequence_number', help='Line Numbers')
+    sequence_number = fields.Integer(string='#', compute='_compute_sequence_number', help='Line Numbers', store=True)
 
     @api.depends('picking_id')
     def _compute_sequence_number(self):
