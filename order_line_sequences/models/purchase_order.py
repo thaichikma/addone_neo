@@ -30,7 +30,7 @@ class PurchaseOrderLine(models.Model):
 
     _inherit = 'purchase.order.line'
 
-    sequence_number = fields.Integer(string='#', compute='_compute_sequence_number', help='Line Numbers')
+    sequence_number = fields.Integer(string='#', compute='_compute_sequence_number', help='Line Numbers', store=True)
 
     @api.depends('sequence', 'order_id')
     def _compute_sequence_number(self):
