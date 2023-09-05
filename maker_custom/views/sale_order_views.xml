@@ -9,10 +9,10 @@
                 <!--                <xpath expr="//field[@name='date_order']" position="attributes">-->
                 <!--                         <attribute name="invisible">1</attribute>-->
                 <!--                </xpath>-->
-                <xpath expr="//button[@id='create_invoice']" position="before">
+<!--                 <xpath expr="//button[@id='create_invoice']" position="before">
                     <button name="print_excel" string="Print excel" type="object" class="oe_highlight"
                    attrs="{'invisible': [('state', 'in', ('draft','sent'))]}"/>
-                </xpath>
+                </xpath> -->
                 <xpath expr="//field[@name='client_order_ref']" position="attributes">
                     <attribute name="invisible">1</attribute>
                 </xpath>
@@ -39,6 +39,7 @@
                 </xpath>
                 <xpath expr="//field[@name='date_order']" position="after">
                     <field name="commitment_date"/>
+					<field name="expected_date"/>
                     <field name="incoterm"/>
                     <field name="incoterm_location"/>
                 </xpath>
