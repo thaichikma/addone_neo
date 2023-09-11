@@ -13,7 +13,7 @@ class AccountOrderLine(models.Model):
         """Function to compute line numbers"""
         for order in self.mapped('move_id'):
             sequence_number = 1
-            for lines in order.order_line:
+            for lines in order.move_id:
                 if lines.display_type:
                     lines.sequence_number = sequence_number
                     sequence_number += 0
