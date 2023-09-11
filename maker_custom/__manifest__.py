@@ -18,7 +18,7 @@
     'depends': ['base', 'product', 'sale', 'sale_stock',
                 'purchase', 'account', 'stock',
                 'payment',
-                'report_xlsx','sale_management','report_preview_xlsx'],
+                'report_xlsx','sale_management'],
     # 'auto_install': True,
 
     # always loaded
