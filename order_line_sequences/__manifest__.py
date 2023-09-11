@@ -40,6 +40,7 @@
         'views/sale_order_document_view.xml',
         'views/report_picking_view.xml',
         'views/report_purchaseorder_document_view.xml',
+        'views/account_move_line.xml',
     ],
     'images': ['static/description/banner.png'],
     'installable': True,
