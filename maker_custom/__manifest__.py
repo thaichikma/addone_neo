@@ -18,7 +18,7 @@
     'depends': ['base', 'product', 'sale', 'sale_stock',
                 'purchase', 'account', 'stock',
                 'payment',
-                'report_xlsx','sale_management'],
+                'report_xlsx','sale_management','report_preview_xlsx'],
     # 'auto_install': True,
 
     # always loaded
@@ -32,7 +32,7 @@
         'views/purchase_order_views.xml',
         'views/stock_move_views.xml',
         'views/account_move_views.xml',
-        'wizard/report.xml'
+        'wizard/report.xml',
         # 'views/sale_stock_views.xml',
     ],
     "assets": {
