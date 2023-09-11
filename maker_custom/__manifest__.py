@@ -32,7 +32,7 @@
         'views/purchase_order_views.xml',
         'views/stock_move_views.xml',
         'views/account_move_views.xml',
-        'wizard/report.xml'
+        'wizard/report.xml',
         # 'views/sale_stock_views.xml',
     ],
     "assets": {
